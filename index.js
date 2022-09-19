@@ -38,9 +38,9 @@ const contactsOperations = require(operationsPath);
 }
 
 //invokeAction({ action: "list" });
-invokeAction({ action: 'get', id: 1 });
-
-
+//invokeAction({ action: 'get', id: 1 });
+//invokeAction({ action: 'remove', id: 1 });
+invokeAction({ action: 'add', name: 'Frodo', email: 'fr@mail.com', phone: '111111' })
 
 
 // invokeAction(argv);

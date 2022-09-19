@@ -15,12 +15,16 @@ async function getContactById(contactId) {
   return result;
 }
 
-function removeContact(contactId) {
-  // ...твій код
+async function removeContact(contactId) {
+  const contacts = await listContacts();
+  const refreshedContacts = contacts.filter(item => +item.id !== contactId);
+  //console.log(refreshedContacts);
 }
 
-function addContact(name, email, phone) {
-  // ...твій код
+async function addContact(name, email, phone) {
+  const contacts = await listContacts();
+  contacts.push({ id: `${contacts.length + 1}`, name: name, email: email, phone: phone });
+  //console.log(contacts);
 }
 
 module.exports = {
