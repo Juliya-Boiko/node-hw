@@ -23,6 +23,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "commander": "^9.4.0"
+    "commander": "^9.4.0",
+    "short-unique-id": "^4.4.4"
   }
 }

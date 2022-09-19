@@ -1,7 +1,9 @@
 const fs = require('fs').promises;
 const path = require('path');
+const ShortUniqueId = require('short-unique-id');
 
 const filePath = path.join(__dirname, 'db/contacts.json');
+const uid = new ShortUniqueId({ length: 10 });
 
 async function listContacts() {
   const data = await fs.readFile(filePath);
@@ -11,27 +13,47 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   const contacts = await listContacts();
-  const result = contacts.find(item => +item.id === contactId);
+  const result = contacts.find(item => item.id === contactId);
+  if (!result) {
+    return null;
+  }
   return result;
-}
-
-async function removeContact(contactId) {
-  const contacts = await listContacts();
-  const refreshedContacts = contacts.filter(item => +item.id !== contactId);
-  //console.log(refreshedContacts);
 }
 
 async function addContact(name, email, phone) {
   const contacts = await listContacts();
-  contacts.push({ id: `${contacts.length + 1}`, name: name, email: email, phone: phone });
-  //console.log(contacts);
+  if (name === '' || email === '' || phone === '') {
+    console.log('All fields must be filled!!!');
+    return;
+  }
+  const newContact = {
+    id: uid(),
+    name: name,
+    email: email,
+    phone: phone
+  };
+  contacts.push(newContact);
+  fs.writeFile(filePath, JSON.stringify(contacts));
+  console.log(`New contact: ${name} was added`);
+}
+
+async function removeContact(contactId) {
+  const contacts = await listContacts();
+  const index = contacts.findIndex((item => item.id === contactId));
+  if (index === -1) {
+    return null;
+  }
+  const removedItem = contacts[index];
+  contacts.splice(index, 1);
+  fs.writeFile(filePath, JSON.stringify(contacts));
+  return removedItem;
 }
 
 module.exports = {
   listContacts,
   getContactById,
-  removeContact,
   addContact,
+  removeContact
 };
 
 

@@ -20,17 +20,26 @@ const contactsOperations = require(operationsPath);
   switch (action) {
     case "list":
       const list = await contactsOperations.listContacts();
-      console.log(list);
+      console.table(list);
       break;
     case "get":
       const contact = await contactsOperations.getContactById(id);
+      if (!contact) {
+        console.log(`Contact with id=${id} not found`);
+        break;
+      }
       console.log(contact);
       break;
     case "add":
       await contactsOperations.addContact(name, email, phone);
       break;
     case "remove":
-      await contactsOperations.removeContact(id);
+      const result = await contactsOperations.removeContact(id);
+      if (!result) {
+        console.log(`Dont have id=${id} in contacts list`);
+        break;
+      }
+      console.log(`Contact ${result.name} with id=${id} was removed`);
       break;
     default:
       console.warn("\x1B[31m Unknown action type! DEFAULT ACTION");
@@ -38,9 +47,9 @@ const contactsOperations = require(operationsPath);
 }
 
 //invokeAction({ action: "list" });
-//invokeAction({ action: 'get', id: 1 });
-//invokeAction({ action: 'remove', id: 1 });
-invokeAction({ action: 'add', name: 'Frodo', email: 'fr@mail.com', phone: '111111' })
+//invokeAction({ action: 'get', id: '10' });
+invokeAction({ action: 'remove', id: 'YsKFlJDX5X' });
+//invokeAction({ action: 'add', name: 'Frodo', email: 'fr@mail.com', phone: '111111' })
 
 
 // invokeAction(argv);
