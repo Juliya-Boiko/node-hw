@@ -25,10 +25,6 @@ async function getContactById(contactId) {
 // ADD CONTACT =============================================================
 async function addContact(name, email, phone) {
   const contacts = await listContacts();
-  if (name === '' || email === '' || phone === '') {
-    console.log('All fields must be filled!!!');
-    return;
-  }
   const newContact = {
     id: uid(),
     name: name,
